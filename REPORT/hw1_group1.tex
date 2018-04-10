@@ -349,7 +349,7 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, and $E$ the vect
 			
 			Therefore $\langle \cdot, \cdot \rangle$ is an inner product over $E$ from which $N$ derives since $N(x) = \sqrt{\langle x,x \rangle}$.
 			
-			\underline{Conclusion:} $N$ is a Euclidian norm if and only if it checks the parallelogram identity.
+			\underline{Conclusion:} $N$ is a Euclidean norm if and only if it checks the parallelogram identity.
 			
 		\end{enumerate}
 		
@@ -361,10 +361,20 @@ Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space, and $E$ the vect
 		
 		\begin{solution}
 		
-		Given the previous question, we just need to verify if these norms check the parallelogram identity to know if they are Euclidian.
+		Given the previous question, we just need to verify if these norms check the parallelogram identity to know if they are Euclidean.
 		
-		[TODO] Since $p \geqslant 1$, both $N_p$ and $Q_p$ are Euclidian norms.
-%			
+		For $p = 2$, $N_p$ is nothing but the so called Euclidean norm over $\R^n$, which as its name tells us, is Euclidean and derives from the canonical inner product of $\R^n$: $\langle x,y \rangle = x^T y$.
+		
+		However, \textbf{for} $p \geq 1$ \textbf{but} $p\neq 2$, $N_p$ is not Euclidean.
+		As a counterexample, one can consider $x = (1,1,0, \ldots, 0)$ and $y = (1,-1,0,\ldots,0)$. We have $N_p(x) = N_p (y) = \sqrt[p]{2}$ but $N_p (x+y) = N_p (x-y) = 2$. So $N_p ^2 (x+y) + N_p ^2 (x-y) = 8 \neq N_p ^2 (x) + N_p ^2 (y) = 4 \sqrt[\frac{p}{2}]{2}$.
+		
+		Since it doesn't check the parallelogram identity, $N_p$ is not Euclidean \textbf{for} $p \geq 1$ \textbf{but} $p\neq 2$.
+		
+		$Q_p$ is not a norm for any $p \in [1, \infty)$ since it doesn't check the triangle inequality: for $x = (1,0,\ldots,0)$ and $y = (0,1,0,\ldots,0)$, we have:
+		$$Q_p(x+y)^2 = 2^2 + \frac{1}{p} > Q_p(x)^2 + Q_p(y)^2 = 1^2 + 1^2 = 2$$
+		
+		A fortiori, it can't be a Euclidean norm.
+		
 		\end{solution}
 		\item Define $A^2 (x, y) = [N(x) \cdot N(y)]^2 - [N(x + y)^2 - N(x - y)^2 ]^2 /16$. Show that if $N$ is Euclidean then
 		$A^2 (x, y) \geq 0$ and $A(x + y, x - y)$ = $2 \cdot A(x, y)$.
