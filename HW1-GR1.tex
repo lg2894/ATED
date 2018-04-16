@@ -89,8 +89,16 @@ Use your knowledge of how the VIX is calculated to show that the VIX is not the 
 
 \begin{solution}
 
-[TODO]
-	
+VIX is calculated from the fair short term variance of listed options on S\&P 500. The fair short term variance is in accordance with the fair strike of a variance swap calculated using price of a log contract with payoff as $-\log (\frac{S(T)}{F})$, where F is the price of forward of the underlying S with corresponding maturity. 
+
+Since VIX is just an index, the only possible way to invest in VIX is by replicating the index. Unlike other indexes like S\&P 500, replicating VIX using S\&P 500 options seems complicated as the time value factor associated with VIX is just the square root of the time value factor that is associated with risk neutral discounting. (Since the formula for VIX calculation, has the risk neutral time value factor $e^{rT}$ associated with the squared of the VIX)
+
+Therefore the only way to invest in VIX is via VIX futures and VIX options.
+
+VIX squared on the other hand, as described by the calculation of fair short term variance, is just $\frac{2}{T}$ times the risk neutral expectation of the log contract. Thus the VIX squared can be invested using variance swaps.
+
+Hence while VIX is not the price of an investable asset, VIX squared is. 
+
 \end{solution}
 
 \newpage
