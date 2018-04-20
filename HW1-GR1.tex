@@ -113,14 +113,18 @@ where $a = 0.009$, $b = 0.11$, $\rho = −0.12$, $m = 0.2$, $s = 0.05$, $x = \lo
 	
 	\begin{solution}
 	
-	[TODO]
+	\includegraphics{impliedVol.png}
+	
 	\end{solution}
 	
 	\item Calculate the fair strike K var of a variance swap expiring on March 15, 2019 with the method of your choice. How close is your calculation to the 12-month VIX? Why is it not exactly the same?
 	
 	\begin{solution}
 	
-	[TODO]
+	Applying $Eq. (5.3)$ from the Advanced Equity Derivatives text to options data obtained from the CBOE on April 18 (3:28PM), resulted in the fair strike, $K_{var}=19.0.$  The strikes of the puts (calls) used were at most (least) the forward price.
+	The results obtained are quite close the the 12-month VIX, with a percentage error of $11.8\%.$  They are not exactly the same because variance is convex in volatility, and the difference between them is related to the volatility of the volatility.
+	
+	
 	\end{solution}	
 
 	\end{enumerate}
