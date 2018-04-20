@@ -52,33 +52,73 @@ You are short 100 at-the-money call option contracts on the S\&P 500 index expir
 		
 		\begin{solution}
 		
-		[TODO]
+		Please refer to the \verb|HW1-GR1.ipynb| file for the code as well as the numerical values obtained, as well as plots showing the evolution of the stock price, the call price, the delta, the gamma and the theta (all these greeks being computed for one call option) accross time.
 	
 		\end{solution}
 		\item Then simulate your actual cumulative P\&L when periodically delta-hedging your position (assuming you can trade the index as an asset) and compare it against the proxy formula on slide 11 for the following matrix of parameters:
+			
+		\begin{solution}
+			
+		Actual:
 		
 		\linethickness{1pt}
 		\setlength{\arrayrulewidth}{1pt}
 		\begin{tabular}{|c|c|c|c|}
 			\hline
 			\backslashbox{$\sigma$}{$\Delta t$} & Monthly (12 per year) & Weekly (52 per year) & Daily (252 per year) \\ \hline
-			$\sigma = 25 \%$ &  &  &  \\ \hline
-			$\sigma = 20 \%$ &  &  &  \\ \hline
-			$\sigma = 15 \%$ &  &  &  \\ \hline
-		\end{tabular} 
+			$\sigma = 25 \%$ & 132756 & 127405 & 124553 \\ \hline
+			$\sigma = 20 \%$ & 131948 & 127201 & 124423 \\ \hline
+			$\sigma = 15 \%$ & 131196 & 127086 & 124408 \\ \hline
+		\end{tabular}
 	
-		\begin{solution}
+		\newpage
+	
+		Proxy:
 		
-		[TODO]
-		
+		\linethickness{1pt}
+		\setlength{\arrayrulewidth}{1pt}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\backslashbox{$\sigma$}{$\Delta t$} & Monthly (12 per year) & Weekly (52 per year) & Daily (252 per year) \\ \hline
+			$\sigma = 25 \%$ & 153502 & 611820  & 2296570 \\ \hline
+			$\sigma = 20 \%$ & 119743 & 458939 & 1663050 \\ \hline
+			$\sigma = 15 \%$ & 85797 & 311566 & 1080117 \\ \hline
+		\end{tabular} 
+
 		\end{solution}
 		
 		\item Provide a statistical analysis of your results over 10,000 simulations, where one simulation is an entire index path.
 		
 		\begin{solution}
-		
-		[TODO]
 			
+		The above tables show the empirical means obtained after 10000 simulations of stock paths (with volatility uniformly drawed at each simulation between 0 and 0.35).
+		
+		Here are the corresponding empirical standard deviations:
+		
+		Actual:
+		
+		\linethickness{1pt}
+		\setlength{\arrayrulewidth}{1pt}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\backslashbox{$\sigma$}{$\Delta t$} & Monthly (12 per year) & Weekly (52 per year) & Daily (252 per year) \\ \hline
+			$\sigma = 25 \%$ & 47908 & 88435 & 107883 \\ \hline
+			$\sigma = 20 \%$ & 55320 & 93210 & 109882 \\ \hline
+			$\sigma = 15 \%$ & 64879 & 98548 & 112054 \\ \hline
+		\end{tabular}
+		
+		Proxy:
+		
+		\linethickness{1pt}
+		\setlength{\arrayrulewidth}{1pt}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\backslashbox{$\sigma$}{$\Delta t$} & Monthly (12 per year) & Weekly (52 per year) & Daily (252 per year) \\ \hline
+			$\sigma = 25 \%$ & 14911 & 166244  & 1156583 \\ \hline
+			$\sigma = 20 \%$ & 15569 & 148819 & 946564 \\ \hline
+			$\sigma = 15 \%$ & 15651 & 124899 & 713512 \\ \hline
+		\end{tabular} 
+
 		\end{solution}
 	\end{enumerate}
 	
@@ -89,15 +129,22 @@ Use your knowledge of how the VIX is calculated to show that the VIX is not the 
 
 \begin{solution}
 
-VIX is calculated from the fair short term variance of listed options on S\&P 500. The fair short term variance is in accordance with the fair strike of a variance swap calculated using price of a log contract with payoff as $-\log (\frac{S(T)}{F})$, where F is the price of forward of the underlying S with corresponding maturity. 
+The VIX is calculated from the fair short term variance of listed options on the S\&P 500. The fair short term variance is in accordance with the fair strike of a variance swap calculated using price of a log contract with payoff as $-\log (\frac{S(T)}{F})$, where $F$ is the price of forward of the underlying $S$ with corresponding maturity.
+\\
 
-Since VIX is just an index, the only possible way to invest in VIX is by replicating the index. Unlike other indexes like S\&P 500, replicating VIX using S\&P 500 options seems complicated as the time value factor associated with VIX is just the square root of the time value factor that is associated with risk neutral discounting. (Since the formula for VIX calculation, has the risk neutral time value factor $e^{rT}$ associated with the squared of the VIX)
+Since VIX is just an index, the only possible way to invest in it is by replication. Unlike other indices like the S\&P 500, replicating the VIX using S\&P 500 options is not possible as the time value factor associated with the VIX is the square root of the time value factor that is associated with risk neutral discounting. (Since the formula for the VIX calculation as the risk neutral time value factor $e^{rT}$ associated with the squared of the VIX).
+\\
 
-Therefore the only way to invest in VIX is via VIX futures and VIX options.
+An intuition of this exists from a mathematical standpoint. Assume we are in a Black-Scholes, and in particular that the dynamics of the stocks follow lognormal distributions: $dS (t) = S (t) \mu dt + \sigma S (t) dW (t)$. Assuming we can find a function that would play an analogue role as the logarithm in the variance swap replication. By It\^o-Doeblin lemma, we would have $df(S_t) = f'(S_t)dS_t + \frac{1}{2} f''(S_t) \sigma^2 S^2_t dt = (\mu f'(S_t) + \frac{1}{2} f''(S_t) \sigma^2 S_t) S_t dt + f'(t) \sigma S_t dW_t$. No matter what, this $\sigma^2$ term will always be here. And it is exclusively a function of $S$, not of the instantaneous volatility because the payoffs of vanilla options is not dependent on the volatility. It's only a function of the stock price. Therefore we can't get rid of this random component, and there's no way to hedge it, i.e. there is no way to replicate it.
+\\
 
-VIX squared on the other hand, as described by the calculation of fair short term variance, is just $\frac{2}{T}$ times the risk neutral expectation of the log contract. Thus the VIX squared can be invested using variance swaps.
+Therefore the only way to invest in the VIX is via VIX futures and VIX options.
+\\
 
-Hence while VIX is not the price of an investable asset, VIX squared is. 
+VIX squared on the other hand, as described by the calculation of fair short term variance, is just $\frac{2}{T}$ times the risk neutral expectation of the log contract. The VIX squared can be invested using variance swaps.
+\\
+
+Conclusion: The VIX is not the price of an investable asset, whereas its square is. 
 
 \end{solution}
 
@@ -116,6 +163,8 @@ where $a = 0.009$, $b = 0.11$, $\rho = −0.12$, $m = 0.2$, $s = 0.05$, $x = \lo
 	\includegraphics{impliedVol.png}
 	
 	\end{solution}
+	
+	\newpage
 	
 	\item Calculate the fair strike K var of a variance swap expiring on March 15, 2019 with the method of your choice. How close is your calculation to the 12-month VIX? Why is it not exactly the same?
 	
