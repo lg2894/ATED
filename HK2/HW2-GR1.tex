@@ -5,6 +5,7 @@
 \usepackage{array} % Improves `tabular` and `array` environments
 \usepackage{pict2e} % Allows \linethickness{...} in diagonal lines
 \usepackage{diagbox}
+\usepackage{breqn} % Fit equations in pages
 
 
 \newcommand{\Z}{\mathbb{Z}}
@@ -54,15 +55,53 @@
 
 		\begin{solution}
 
-		TODO
+		The Nasdaq 100 data provided allows us to get the buy and sell prices of ATM (strike 5050) and $5\%$ OTM (strikes 5200 and 5750) call and put prices (we use midpoints).
+		
+		\begin{enumerate}
+			\item[$\bullet$] Selling ATM Call: $337.1$.
+			
+			\item[$\bullet$] Selling ATM Put: $326.1$.
+			
+			\item[$\bullet$] Buying 5\% OTM Call: $478.1$.
+			
+			\item[$\bullet$] Buying 5\% OTM Put: $428.3$.
+		\end{enumerate}
+	
+		Therefore, the buy prices of the 5\% call and put spreads are:
+		
+		\begin{enumerate}
+			\item[$\bullet$] 5\% call spread: $478.1 - 337.1 = 141.0$.
+			
+			\item[$\bullet$] 5\% put spread: $428.3 - 326.1 = 100.2$.
+		\end{enumerate}		
 
 		\end{solution}
+	
+	\newpage
 
 		\item If you were to price the spreads in the Black-Scholes model using a single volatility parameter $\sigma$, what value of $\sigma$ would match the theoretical price with the market price? Comment on your results.
 	
 		\begin{solution}
 
-		TODO
+		Applying a Black-Scholes pricing formula would lead to the following theoretical prices for the 5\% call spread (5\% put spread resp.):
+		
+		\begin{dmath*}
+		CS(K,0.95K) = C(0.95K) - C(K) =  S_t N(d_1(0.95K)) - 0.95K e^{-r(T-t)}N(d_2(0.95K)) - (S_t N(d_1(K)) - K e^{-r(T-t)}N(d_2(K)))
+		\end{dmath*}
+	
+		\begin{dmath*}
+		PS(K,1.05K) = P(1.05K) - P(K) = 1.05K e^{-r(T-t)} N(-d_2(1.05K)) - S_t N(-d_1(1.05K)) - (K e^{-r(T-t)} N(-d_2(K)) - S_t N(-d_1(K)))
+		\end{dmath*}
+		where
+		\begin{align*}
+		d_1(K) &= \frac{1}{\sigma\sqrt{T - t}}\left[\ln\left(\frac{S_t}{K}\right) + \left(r + \frac{\sigma^2}{2}\right)(T - t)\right] \\
+		d_2(K) &= d_1 - \sigma\sqrt{T - t}
+		\end{align*}
+		$\sigma$ is the implied volatility that one can choose to equate theoretical prices to market prices.
+
+		Using a solver, we get $\sigma = 14.13\%$ using the 5\% call spread.
+		
+		This level is relatively close to the implied volatility quoted for ATM (15.4 \%) and 5\% OTM options (14\% to 16.7\%)
 
 		\end{solution}
 
