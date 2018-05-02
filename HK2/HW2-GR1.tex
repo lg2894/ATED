@@ -131,7 +131,7 @@
         	\end{alignat*}
         \end{subequations}
     	
-		Using \texttt{scipy.minimize}, we obtain: $$a = 0.000364, b = 2.55, \rho = 0.961, m = 0.239, s = 0.0149$$
+		Using a Sequential Least Squares Programming method in \texttt{scipy.minimize}, we obtain: $$a = 0.000364, b = 2.55, \rho = 0.961, m = 0.239, s = 0.0149$$
 
 		\end{solution}
 
@@ -139,7 +139,11 @@
 
 		\begin{solution}
 
-		Louis
+		\begin{enumerate}
+			\item[$\bullet$] Black-Scholes model: $D_{BS}(S_t,K,r,T,\sigma)=e^{-rT}N(d_2)$. We obtain: 0.49.
+			\item[$\bullet$] Using $\pm 1\%$ call spreads. We obtain: 0.42.
+			\item[$\bullet$] Using smile-adjusted formula: $D(S_t,K,r,T) = (D_{BS}- V_{BS} \times \frac{\partial \sigma^*}{\partial K})(S_t,K,r,T,\sigma^*(K,T))$, where $V_{BS}$ is the Black-Scholes vega, $V_{BS} = S_t \frac{e^{-\frac{d_1^2}{2}}}{\sqrt{2\pi}} \sqrt{T-t}$. We obtain: 0.59.
+		\end{enumerate}
 
 		\end{solution}
 
