@@ -6,7 +6,7 @@
 \usepackage{pict2e} % Allows \linethickness{...} in diagonal lines
 \usepackage{diagbox}
 \usepackage{breqn} % Fit equations in pages
-
+\usepackage[linewidth=1pt]{mdframed}
 
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\R}{\mathbb{R}}
@@ -265,7 +265,46 @@ where $T = 1$ year and $X_t, Y_t$ are the respective underlying spot prices of $
 		
 		\begin{solution}
 			
-			TODO
+			In a Black-Scholes world, these two correlated stocks have the dynamics:
+			$$ dX_t = (r-\mu_1) X_t dt + \sigma_1 X_t dW_t$$
+			$$ dY_t = (r-\mu_2) Y_t dt + \sigma_2 Y_t (\rho dW_t + \sqrt{1 - \rho^2}dZ_t)$$
+			
+			where r is the risk-free rate, $\mu_1, \mu_2$ are the dividend yields (equal to 0 here by assumption), $\rho$ is the constant correlation between $X$ and $Y$, and $W,Z$ are two uncorrelated Brownian motions.
+			
+			The value of this call is given by: $f_t = e^{-r(T-t)} \mathbb{E}\left(\max\left(0, \sqrt{\frac{X_T Y_T}{X_0 Y_0}} - 1\right) \vert X_t,Y_t \right)$
+			
+			The geometric average of two lognormal is still lognormal. Indeed, for $\alpha > 0$, let us apply Itô-Doeblin formula to the process $V_t = (X_tY_t)^{\alpha}$:
+			
+			We obtain:
+			
+			\begin{dmath*}
+			dV_t = \left(r - \left(\mu_{X,Y} + \left(1-\alpha\right) \left(r - \mu_{X,Y} + \frac{1}{2} \sigma_{X,Y}^2 \right)\right)\right) V_t dt + \alpha V_t \left( \sigma_1 dW_t + \sigma_2 \left(\rho dW_t + \sqrt{1 - \rho^2}dZ_t \right)\right)
+			\end{dmath*}
+		
+			where $\mu_{X,Y} = \mu_1 + \mu_2 -r -\rho \sigma_1 \sigma_2$ and $\sigma_{X,Y} = \sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}$.
+			
+			
+			In our case, we assume no dividend ($\mu_1 = \mu_2 = 0$) and $\alpha =\frac{1}{2}$, so the dynamics of $V_t$ simplifies to:
+			\begin{dmath*}
+			dV_t = \left(r - \frac{1}{4} \left(\sigma_1^2 + \sigma_2^2\right)\right) V_t dt + \frac{1}{2} V_t \left( \sigma_1 dW_t + \sigma_2 \left(\rho dW_t + \sqrt{1 - \rho^2}dZ_t \right)\right)
+			\end{dmath*}
+			
+			If we call $dB_t = \frac{\sigma_1 dW_t + \sigma_2 \left(\rho dW_t + \sqrt{1 - \rho^2}dZ_t \right)}{\sigma_{X,Y}}$, where again $\sigma_{X,Y} = \sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}$, $B_t$ is a Brownian and we have:
+			\begin{dmath*}
+			dV_t = \left(r - \frac{1}{4} \left(\sigma_1^2 + \sigma_2^2\right)\right) V_t dt + \frac{1}{2} \sigma_{X,Y} V_t dB_t
+			\end{dmath*}
+
+			Under this form, we see that $V_t = \sqrt{X_t Y_t}$ follows a lognormal distribution.
+			
+			Therefore, the price of the option is given by the following Black-Scholes formula:
+			$$ f_t = \frac{1}{\sqrt{X_0 Y_0}} \left(\sqrt{X_t Y_t} N(d_1^*) + \sqrt{X_0 Y_0} e^{-r(T-t)}N(d_2^*)\right)$$
+			where
+			\begin{align*}
+			d_1^*(K) &= \frac{1}{\sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}\sqrt{T - t}}\left[\ln\left(\frac{\sqrt{X_t Y_t}}{\sqrt{X_0 Y_0}}\right) + \left(r + \frac{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}{2}\right)(T - t)\right] \\
+			d_2^*(K) &= d_1^* - \frac{1}{2} \sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2} \sqrt{T - t}
+			\end{align*}
+			
+			
 			
 		\end{solution}
 		
