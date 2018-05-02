@@ -116,8 +116,22 @@
 		\item Using the numerical package of your choice, calibrate the parameters of the SVI model against the market-implied volatility data. Show a comparative graph of the SVI curve and the actual implied volatility data points.
 
 		\begin{solution}
+		
+		The SVI model reads: 
+		$$ \sigma^* = \sqrt{a + b \left( \rho (x - m)  + \sqrt{(x-m)^2 + s^2} \right)} $$
 
-		Louis [Data read / functions defined / calibration pending]
+		To calibrate its parameters ($a, b, \rho, m, s$) we perform the following least square optimization against market data, with the following constraints to avoid arbitrage:
+        \begin{subequations}
+        	\begin{alignat*}{2}
+        	&\!\min_{a,b,\rho,m,s}        &\quad& \sum_{i=1}^{n} \left[ \sigma_{\text{SVI}}^{\star^2}(k_i,T;a,b,\rho,m,s) - \sigma_{\text{Market}}^{\star^2}(k_i,T)\right]^2\\
+        	&\text{subject to} &      & a,b \geq 0,\\
+        	&                  &      & -1 \leq \rho \leq 1,\\
+        	&                  &      & s > 0,\\
+        	&                  &      & b(1 + |\rho|)T \leq 4.
+        	\end{alignat*}
+        \end{subequations}
+    	
+		Using \texttt{scipy.minimize}, we obtain: $$a = 0.000364, b = 2.55, \rho = 0.961, m = 0.239, s = 0.0149$$
 
 		\end{solution}
 
@@ -125,7 +139,7 @@
 
 		\begin{solution}
 
-			TODO
+		Louis
 
 		\end{solution}
 
