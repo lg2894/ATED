@@ -120,7 +120,7 @@
 		The SVI model reads: 
 		$$ \sigma^* = \sqrt{a + b \left( \rho (x - m)  + \sqrt{(x-m)^2 + s^2} \right)} $$
 
-		To calibrate its parameters ($a, b, \rho, m, s$) we perform the following least square optimization against market data, with the following constraints to avoid arbitrage:
+		To calibrate its parameters ($a, b, \rho, m, s$) we perform the following least square optimization against market data (both puts and calls), with the following constraints to avoid arbitrage:
         \begin{subequations}
         	\begin{alignat*}{2}
         	&\!\min_{a,b,\rho,m,s}        &\quad& \sum_{i=1}^{n} \left[ \sigma_{\text{SVI}}^{\star^2}(k_i,T;a,b,\rho,m,s) - \sigma_{\text{Market}}^{\star^2}(k_i,T)\right]^2\\
@@ -132,6 +132,12 @@
         \end{subequations}
     	
 		Using a Sequential Least Squares Programming method in \texttt{scipy.minimize}, we obtain: $$a = 0.000364, b = 2.55, \rho = 0.961, m = 0.239, s = 0.0149$$
+		
+		The quality of the fit is very good:
+		
+		\begin{center}
+			\includegraphics[width=0.5\textwidth]{SVI_calibrated}
+		\end{center}
 
 		\end{solution}
 
@@ -140,9 +146,9 @@
 		\begin{solution}
 
 		\begin{enumerate}
-			\item[$\bullet$] Black-Scholes model: $D_{BS}(S_t,K,r,T,\sigma)=e^{-rT}N(d_2)$. We obtain: 0.49.
-			\item[$\bullet$] Using $\pm 1\%$ call spreads. We obtain: 0.42.
-			\item[$\bullet$] Using smile-adjusted formula: $D(S_t,K,r,T) = (D_{BS}- V_{BS} \times \frac{\partial \sigma^*}{\partial K})(S_t,K,r,T,\sigma^*(K,T))$, where $V_{BS}$ is the Black-Scholes vega, $V_{BS} = S_t \frac{e^{-\frac{d_1^2}{2}}}{\sqrt{2\pi}} \sqrt{T-t}$. We obtain: 0.59.
+			\item[$\bullet$] Black-Scholes model: $D_{BS}(S_t,K,r,T,\sigma)=e^{-rT}N(d_2)$. We obtain: 0.495.
+			\item[$\bullet$] Using $\pm 1\%$ call spreads. We obtain: 0.419.
+			\item[$\bullet$] Using smile-adjusted formula: $D(S_t,K,r,T) = (D_{BS}- V_{BS} \times \frac{\partial \sigma^*}{\partial K})(S_t,K,r,T,\sigma^*(K,T))$, where $V_{BS}$ is the Black-Scholes vega, $V_{BS} = S_t \frac{e^{-\frac{d_1^2}{2}}}{\sqrt{2\pi}} \sqrt{T-t}$. We obtain: 0.590.
 		\end{enumerate}
 
 		\end{solution}
@@ -162,25 +168,31 @@
 		\item Use the implied distribution to compute the price of the following European exotic options, where $X_0$ is the current index level and $X_T$ is the final index level:
 
 		\begin{solution}
+			
+			Knowing the implied distribution of an underlying, the value of a derivative $f_t$ at time $t$ with a certain payoff $f(S_T)$ at maturity $T$ is given by discounted the expected payoff under this measure: $f_t = e^{-r(T-t)}\mathbb{E}(f(S_T))$. We apply this to the following cases:
 
 			\begin{enumerate}[label=(\roman*)]
 
 				\item Digital call defined in question (b);
 
-				TODO
+				Its payoff is just $\mathbb{I}(X_T > K)$. We obtain: 0.0361.
 
 				\item "Reverse convertible" paying off $\max\left(100\%, 100\% + p \times \frac{X_T- X_0}{X_0}\right)$ if $\frac{X_T}{X_0} > 75 \%$ and $\frac{X_T}{X_0}$ otherwise, where $p = 50\%$. Then solve for $p$ to get a price of $100\%$;
 
-				TODO
-
+				With $p=0.5$, we obtain: 0.0633.
+				
+				To get a price of $1.0$, we just apply a rootfinding technique to the payoff to which we substract $1.0$, we get: $p=0.5$.
+				
+				
 				\item Option paying off $\max\left(0, \frac{X_T- X_0}{X_T}\right)$;
 
-				TODO
+				We get: $0.000796$.
 
 				\item Log-contract paying off $-2\log\left(\frac{X_T}{X_0}\right)$. Price interpretation;
 
-				TODO
-
+				We get: $0.00429$.
+				
+				Assuming arbitrage (it is the case since we fitted the SVI model), this can be interpreted as the current expected total return gained on the stock over the life-time of the option, i.e.\ 0.429 \% over 1 year.
 			\end{enumerate}
 
 		\end{solution}
