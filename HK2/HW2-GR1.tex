@@ -237,7 +237,7 @@ $$\sigma^{\star^2} (k_F,T) \leq \frac{\beta}{T} |\log{k_F}|,\, \beta \in [0,2]$$
 \newpage
 
 \section*{Problem 4}
-(Problem $4.3$ p$.\ 56$ in textbook, with corrections): Consider an underlying stock $S$ currently trading at $S_0 = 100$ which does not pay any dividend. Assume the local volatility function is $\sigma_{loc} (t, S) = \frac{0.1 - 0.15 \times \log\left(\frac{S}{S_0}\right)}{\sqrt{t}}$, and that interest rates are zero.
+(Problem $4.3$ p$.\ 56$ in textbook, with corrections): Consider an underlying stock $S$ currently trading at $S_0 = 100$ which does not pay any dividend. Assume the local volatility function is $\sigma_{loc} (t, S) = 0.1 + \frac{0.1 - 0.15 \times \log\left(\frac{S}{S_0}\right)}{\sqrt{t}}$, and that interest rates are zero.
 
 	\begin{enumerate}[label=(\alph*)]
 		
@@ -259,7 +259,7 @@ $$\sigma^{\star^2} (k_F,T) \leq \frac{\beta}{T} |\log{k_F}|,\, \beta \in [0,2]$$
 			$$ dS_t = \mu_t dt + \sigma_{loc} (t,S_t) dW_t$$
 			
 			In our case, we have the expression of the local volatility and there is no interest rate and no dividend yield. Therefore, $\mu_t = 0$ and:
-			$$ dS_t =  \frac{0.1 - 0.15 \times \log\left(\frac{S}{S_0}\right)}{\sqrt{t}} dW_t$$
+			$$ dS_t =  \left( 0.1 + \frac{0.1 - 0.15 \times \log\left(\frac{S}{S_0}\right)}{\sqrt{t}} \right) dW_t$$
 			
 			We use a Euler scheme to simulate this SDE, and then apply a Monte Carlo technique to price the following derivatives:
 			
@@ -267,15 +267,15 @@ $$\sigma^{\star^2} (k_F,T) \leq \frac{\beta}{T} |\log{k_F}|,\, \beta \in [0,2]$$
 	
 				\item "Capped quadratic" option: $\min\left(1,\frac{S_1^2}{S_0^2}\right)$;
 								
-				We get: $0.998$.
+				We get: $0.997$.
 				
 				\item Asian at-the-money-call: $\max\left(0, \frac{S_{0.25} + S_{0.5} + S_{0.75} + S_1}{4 \times S_0} - 1\right)$;
 				
-				We get: $0.000914$.
+				We get: $0.00114$.
 				
 				\item Barrier call: $\max(0, S_1 - S_0)$ if $S$ always traded above $80$ using $252$ daily observations, 0 otherwise;
 				
-				We get: $0.0979$.
+				We get: $0.131$.
 				
 			\end{enumerate}
 			
