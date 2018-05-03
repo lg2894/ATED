@@ -55,7 +55,7 @@
 
 		\begin{solution}
 
-		The Nasdaq 100 data provided allows us to get the buy and sell prices of ATM (strike 5050) and $5\%$ OTM (strikes 5200 and 5750) call and put prices (we use midpoints).
+		The Nasdaq 100 data provided allows us to get the buy and sell prices of ATM (strike 5050) and $5\%$ OTM (strikes 5200 and 5750) call and put prices.
 		
 		\begin{enumerate}
 			\item[$\bullet$] Selling ATM Call: $337.1$.
@@ -207,7 +207,30 @@ $$\sigma^{\star^2} (k_F,T) \leq \frac{\beta}{T} |\log{k_F}|,\, \beta \in [0,2]$$
 
 	\begin{solution}
 
-	TODO
+	In the SVI model, the implied variance reads:
+	$$ \sigma^{*^2}(a,b,\rho,m,s; x) = a + b(\rho(x-m) + \sqrt{(x-m)^2 + s^2})$$
+	
+	The no arbitrage constraints are: 
+	$$ a,b \geq 0$$
+	$$ |\rho| \leq 1 $$
+	$$ s > 0 $$
+	$$ b(1 + |\rho|)T \leq 4$$
+	
+	In order for the variance to be greater than zero, we must ensure that the minimum value of the above expression to be greater than zero.
+	
+	Since its second derivative is positive, a minimum is obtained by equating its derivative with respect to x as zero. Doing that, we get a minimum value of $$a + b\sigma\sqrt{1-\rho^2}$$
+	
+	Therefore we get the additional constraint: $$a + b\sigma\sqrt{1-\rho^2} \geq 0$$
+	
+	Using Lee's asymptotic inequality, as $x$ tends to infinity,
+	$$ \sigma^{*^2} \geq \frac{\beta|x|}{T}$$
+	
+	where $\beta \in [0,2]$.
+	
+	Taking $x$ to infinity in the expression $\sigma^{*^2} = |x-m|\left(\frac{a}{|x-m|} + b\rho \left(\text{sign}(x-m) + \sqrt{1 + \frac{\sigma^2}{(x-m)^2}} \right)\right)$
+	gives that $b(1+\rho) \leq \frac{\beta}{T}$ and $b(1-\rho) \leq \frac{\beta}{T}$.
+	
+	Therefore we have, $$0 \leq bT(1+\rho) \leq \beta$$ $$0 \leq bT(1-\rho) \leq \beta$$ where $\beta \in [0,2]$.
 
 	\end{solution}
 
@@ -222,7 +245,9 @@ $$\sigma^{\star^2} (k_F,T) \leq \frac{\beta}{T} |\log{k_F}|,\, \beta \in [0,2]$$
 		
 		\begin{solution}
 			
-			TODO
+			\begin{center}
+				\includegraphics[width=0.5\textwidth]{local_vol}
+			\end{center}
 			
 		\end{solution}
 		
@@ -230,19 +255,27 @@ $$\sigma^{\star^2} (k_F,T) \leq \frac{\beta}{T} |\log{k_F}|,\, \beta \in [0,2]$$
 		
 		\begin{solution}
 			
+			The continuous time formulation of the local volatility model is that the spot price process is a diffusion of the form:
+			$$ dS_t = \mu_t dt + \sigma_{loc} (t,S_t) dW_t$$
+			
+			In our case, we have the expression of the local volatility and there is no interest rate and no dividend yield. Therefore, $\mu_t = 0$ and:
+			$$ dS_t =  \frac{0.1 - 0.15 \times \log\left(\frac{S}{S_0}\right)}{\sqrt{t}} dW_t$$
+			
+			We use a Euler scheme to simulate this SDE, and then apply a Monte Carlo technique to price the following derivatives:
+			
 			\begin{enumerate}[label=(\roman*)]
 	
 				\item "Capped quadratic" option: $\min\left(1,\frac{S_1^2}{S_0^2}\right)$;
 								
-				TODO
+				We get: $0.998$.
 				
 				\item Asian at-the-money-call: $\max\left(0, \frac{S_{0.25} + S_{0.5} + S_{0.75} + S_1}{4 \times S_0} - 1\right)$;
 				
-				TODO
+				We get: $0.000914$.
 				
 				\item Barrier call: $\max(0, S_1 - S_0)$ if $S$ always traded above $80$ using $252$ daily observations, 0 otherwise;
 				
-				TODO
+				We get: $0.0979$.
 				
 			\end{enumerate}
 			
@@ -326,7 +359,7 @@ where $T = 1$ year and $X_t, Y_t$ are the respective underlying spot prices of $
 			
 			One must realize that these positions DO NOT hedge the first-order correlation risk that is rather cumbersome to deal with. We would have to cancel our correlation vega, but it changes as cross-gammas (and eventually cross-volgas) are neutralized.
 			
-			Here are the table and the plot of our instant $P\&L$ against percent changes $x, y$ in underlying stock prices (we used the values of question b) for the volatilities, the correlation, the maturity and the risk-free rate).
+			Below are the table and the plot of our instant $P\&L$ against percent changes $x, y$ in underlying stock prices (we used the values of question b) for the volatilities, the correlation, the maturity and the risk-free rate).
 			
 			Note that we assumed that everything happened on a short timeframe, hence we neglected interest rate effects (the true $P\&L$ would be $d\Pi - r\Pi dt$, where $\Pi$ is the money borrowed to set up initially our delta-hedged portfolio).
 			
@@ -335,7 +368,7 @@ where $T = 1$ year and $X_t, Y_t$ are the respective underlying spot prices of $
 			\begin{enumerate}
 				\item[$\bullet$] Price of the call at time 0: $5937170.$
 				\item[$\bullet$] Initial deltas (X,Y): $1.2564, 1.2564$
-				\item[$\bullet$] Delta-hedged portolio setup cost: $19192049.204$
+				\item[$\bullet$] Delta-hedged portolio setup cost $\Pi$: $19192049.204$
 			\end{enumerate}
 		\[
 		\linethickness{1pt}
