@@ -297,14 +297,14 @@ where $T = 1$ year and $X_t, Y_t$ are the respective underlying spot prices of $
 			Under this form, we see that $V_t = \sqrt{X_t Y_t}$ follows a lognormal distribution.
 			
 			Therefore, the price of the option is given by the following Black-Scholes formula:
-			$$ f_t = \frac{1}{\sqrt{X_0 Y_0}} \left(\sqrt{X_t Y_t} N(d_1^*) + \sqrt{X_0 Y_0} e^{-r(T-t)}N(d_2^*)\right)$$
+			$$ f_t = \frac{1}{\sqrt{X_0 Y_0}} \left(e^{-\frac{1}{4} \left(\sigma_1^2 + \sigma_2^2\right)(T-t)}\sqrt{X_t Y_t} N(d_1^*) + \sqrt{X_0 Y_0} e^{-r(T-t)}N(d_2^*)\right)$$
 			where
-			\begin{align*}
-			d_1^*(K) &= \frac{1}{\sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}\sqrt{T - t}}\left[\ln\left(\frac{\sqrt{X_t Y_t}}{\sqrt{X_0 Y_0}}\right) + \left(r + \frac{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}{2}\right)(T - t)\right] \\
-			d_2^*(K) &= d_1^* - \frac{1}{2} \sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2} \sqrt{T - t}
-			\end{align*}
-			
-			
+			\begin{dmath*}
+			d_1^*(K) = \frac{2}{\sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}\sqrt{T - t}}\left[\ln\left(\frac{\sqrt{X_t Y_t}}{\sqrt{X_0 Y_0}}\right) + \left(r - \frac{1}{4} \left(\sigma_1^2 + \sigma_2^2\right) + \frac{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2}{8}\right)(T - t)\right]
+			\end{dmath*}
+			\begin{dmath*}
+			d_2^*(K) = d_1^* - \frac{1}{2} \sqrt{\sigma_1^2 + \sigma_2^2 + 2\rho \sigma_1 \sigma_2} \sqrt{T - t}
+			\end{dmath*}
 			
 		\end{solution}
 		
@@ -312,7 +312,9 @@ where $T = 1$ year and $X_t, Y_t$ are the respective underlying spot prices of $
 		
 		\begin{solution}
 			
-			TODO
+			Using unit values for $X_0,Y_0,X_t,Y_t$, and $\sigma_1 = 20\%$, $\sigma_2 = 30 \%$ and $\rho = 0.4$, we get: $1.06$.
+			
+			For the same values, finite differences (although explicit greeks could be computed) give: $\delta_X = 2.156, \delta_Y = 2.156, \gamma_X = -1.428, \gamma_Y = -1.428, \gamma_{XY} = 1.428$.
 			
 		\end{solution}
 		
